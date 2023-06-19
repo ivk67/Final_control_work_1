@@ -9,7 +9,11 @@ def create_note():
     global notes
     note_id = len(notes) + 1
     title = input("Введите заголовок заметки: ")
-    body = input("Введите текст заметки: ")
+    try:
+        body = input("Введите текст заметки: ").strip()
+    except Exception as e:
+        print("Произошла ошибка ввода: ", e)
+        body = ""
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     note = {"id": note_id, "title": title, "body": body, "timestamp": timestamp}
     notes.append(note)
@@ -21,21 +25,38 @@ def read_notes():
     for note in notes:
         print(f"{note['id']}. {note['title']} ({note['timestamp']})")
 
+# def edit_note():
+#     note_id = int(input("Введите ID заметки, которую вы хотите отредактировать: "))
+#     for note in notes:
+#         if note["id"] == note_id:
+#             print("1. Заголовок\n2. Текст")
+#             choice = input("Выберите поле, которое вы хотите отредактировать: ")
+#             if choice == "1":
+#                 note["title"] = input("Введите новый заголовок для заметки: ")
+#             elif choice == "2":
+#                 note["body"] = input("Введите новый текст для заметки: ")
+#             note["timestamp"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+#             save_file()
+#             print("Заметка отредактирована.")
+#             return
+#     print("Заметка с таким ID не найдена.")
+
 def edit_note():
-    note_id = int(input("Введите ID заметки, которую вы хотите отредактировать: "))
+    global notes
+    note_id = int(input("Введите id заметки: "))
     for note in notes:
         if note["id"] == note_id:
-            print("1. Заголовок\n2. Текст")
-            choice = input("Выберите поле, которое вы хотите отредактировать: ")
-            if choice == "1":
-                note["title"] = input("Введите новый заголовок для заметки: ")
-            elif choice == "2":
-                note["body"] = input("Введите новый текст для заметки: ")
+            note["title"] = input("Введите новый заголовок для заметки: ")
+            try:
+                note["body"] = input("Введите новый текст для заметки: ").strip()
+            except Exception as e:
+                print("Произошла ошибка ввода: ", e)
+                note["body"] = ""
             note["timestamp"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             save_file()
-            print("Заметка отредактирована.")
+            print("Заметка успешно изменена.")
             return
-    print("Заметка с таким ID не найдена.")
+    print("Заметка с таким id не найдена.")
 
 def delete_note():
     note_id = int(input("Введите ID заметки, которую необходимо удалить: "))
