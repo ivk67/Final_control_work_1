@@ -60,18 +60,13 @@ def delete_note():
 #             for note in notes:
 #                 f.write(f"{note['id']};{note['timestamp']};{note['title']};{note['body']}\n")
 
-# def save_file():
-#     file_name = asksaveasfilename(defaultextension=".json") 
-#     if file_name:
-#         with io.open(file_name, "w", encoding="utf-8") as f: json.dump(notes, f, ensure_ascii=False)  
-
 def save_file():
-    file_name = asksaveasfilename(defaultextension=".json")
+    file_name = asksaveasfilename(defaultextension=".json") 
     if file_name:
         with io.open(file_name, "w", encoding="utf-8") as f:
-            notes_list = [f"{note['id']};{note['timestamp']};{note['title']};{note['body']}" for note in notes]
-            f.write('\n'.join(notes_list))                     
-   
+            json.dump(notes, f, ensure_ascii=False)
+        
+
 def load_file():
     try:
         file_name = askopenfilename(filetypes=[("JSON Files", "*.json")])
@@ -79,8 +74,8 @@ def load_file():
             with io.open(file_name, "r", encoding="utf-8") as f:
                 global notes
                 notes = json.load(f)
-    # except Exception as e:
-    #     print("Ошибка загрузки файла:", e)
+    except Exception as e:
+        print("Ошибка загрузки файла:", e)
     except:
         pass
 
