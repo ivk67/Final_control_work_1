@@ -53,12 +53,24 @@ def delete_note():
             return
     print("Заметка с таким ID не найдена.")
 
+# def save_file():
+#     file_name = asksaveasfilename(defaultextension=".json")
+#     if file_name:
+#         with io.open(file_name, "w", encoding="utf-8") as f:
+#             for note in notes:
+#                 f.write(f"{note['id']};{note['timestamp']};{note['title']};{note['body']}\n")
+
+# def save_file():
+#     file_name = asksaveasfilename(defaultextension=".json") 
+#     if file_name:
+#         with io.open(file_name, "w", encoding="utf-8") as f: json.dump(notes, f, ensure_ascii=False)  
+
 def save_file():
     file_name = asksaveasfilename(defaultextension=".json")
     if file_name:
         with io.open(file_name, "w", encoding="utf-8") as f:
-            for note in notes:
-                f.write(f"{note['id']};{note['timestamp']};{note['title']};{note['body']}\n")
+            notes_list = [f"{note['id']};{note['timestamp']};{note['title']};{note['body']}" for note in notes]
+            f.write('\n'.join(notes_list))                     
    
 def load_file():
     try:
