@@ -57,8 +57,9 @@ def save_file():
     file_name = asksaveasfilename(defaultextension=".json")
     if file_name:
         with io.open(file_name, "w", encoding="utf-8") as f:
-            json.dump(notes, f, ensure_ascii=False)
-
+            for note in notes:
+                f.write(f"{note['id']};{note['timestamp']};{note['title']};{note['body']}\n")
+   
 def load_file():
     try:
         file_name = askopenfilename(filetypes=[("JSON Files", "*.json")])
