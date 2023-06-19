@@ -2,6 +2,7 @@
 import json
 import datetime
 from tkinter.filedialog import askopenfilename, asksaveasfilename
+import io
 
 notes = []
 
@@ -24,22 +25,6 @@ def read_notes():
     print("Список заметок:")
     for note in notes:
         print(f"{note['id']}. {note['title']} ({note['timestamp']})")
-
-# def edit_note():
-#     note_id = int(input("Введите ID заметки, которую вы хотите отредактировать: "))
-#     for note in notes:
-#         if note["id"] == note_id:
-#             print("1. Заголовок\n2. Текст")
-#             choice = input("Выберите поле, которое вы хотите отредактировать: ")
-#             if choice == "1":
-#                 note["title"] = input("Введите новый заголовок для заметки: ")
-#             elif choice == "2":
-#                 note["body"] = input("Введите новый текст для заметки: ")
-#             note["timestamp"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-#             save_file()
-#             print("Заметка отредактирована.")
-#             return
-#     print("Заметка с таким ID не найдена.")
 
 def edit_note():
     global notes
@@ -71,16 +56,18 @@ def delete_note():
 def save_file():
     file_name = asksaveasfilename(defaultextension=".json")
     if file_name:
-        with open(file_name, "w") as f:
-            json.dump(notes, f)
+        with io.open(file_name, "w", encoding="utf-8") as f:
+            json.dump(notes, f, ensure_ascii=False)
 
 def load_file():
     try:
         file_name = askopenfilename(filetypes=[("JSON Files", "*.json")])
         if file_name:
-            with open(file_name, "r") as f:
+            with io.open(file_name, "r", encoding="utf-8") as f:
                 global notes
                 notes = json.load(f)
+    # except Exception as e:
+    #     print("Ошибка загрузки файла:", e)
     except:
         pass
 
